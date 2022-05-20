@@ -1,8 +1,13 @@
 const cheerio = require("cheerio");
 const rp = require("request-promise");
 var fs = require("fs");
+const prompt = require("prompt-sync")();
 
-const reqLink = `https://simple.wikipedia.org/wiki/List_of_presidents_of_the_United_States`;
+const name = prompt("Enter link here!");
+
+// const reqLink = `https://simple.wikipedia.org/wiki/List_of_presidents_of_the_United_States`;
+
+const reqLink = `${name}`;
 
 rp(reqLink)
   .then(function (html) {
