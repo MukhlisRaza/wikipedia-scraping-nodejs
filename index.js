@@ -1,5 +1,6 @@
 const cheerio = require("cheerio");
 const rp = require("request-promise");
+var fs = require("fs");
 
 const reqLink = `https://simple.wikipedia.org/wiki/List_of_presidents_of_the_United_States`;
 
@@ -17,21 +18,12 @@ rp(reqLink)
       const Link = title[i].attribs.href;
       wiki.push({ Name, Link });
     }
-    return Promise.all(
-      wiki.map((url) => {
-        return rp(`https://simple.wikipedia.org/${url.Link}`)
-          .then((html) => {
-            const $ = cheerio.load(html);
-            return {
-              Name: $("#firstHeading").text(),
-              OfficePeriod: $(".infobox tr:nth-child(5) td").text(),
-            };
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      })
-    );
+    // console.log(wiki);
+    fs.writeFile("output.json", JSON.stringify(wiki), function (err) {
+      console.log(
+        "Sraping data successfully written! - Check your project public/output.json file"
+      );
+    });
   })
   .then((res) => console.log(res))
   .catch(function (err) {
